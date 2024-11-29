@@ -4,16 +4,16 @@ pipeline {
     stages {
         stage('Deploy To K8s') {
             steps {
-                withKubeCredentials(credentialsId: 'your-kube-credentials-id', namespace: 'webapps') {
+                withKubeConfig(credentialsId: 'k8-token') {
                     sh "kubectl apply -f deployment-service.yml"
                     sleep 60
                 }
             }
         }
-        
+
         stage('Verify Deployment') {
             steps {
-                withKubeCredentials(credentialsId: 'your-kube-credentials-id', namespace: 'webapps') {
+                withKubeConfig(credentialsId: 'k8-token') {
                     sh "kubectl get svc -n webapps"
                 }
             }
